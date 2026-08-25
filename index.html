@@ -28,6 +28,7 @@
       <nav aria-label="Main navigation">
         <a href="#programs">Programs</a>
         <a href="#schedule">Schedule</a>
+        <a href="#email-list">Email List</a>
         <a href="#faq">FAQ</a>
         <a class="nav-cta" href="https://register.teamsnap.com/form/sqQJk4b18wLuPejZ1nhsv">Register</a>
       </nav>
@@ -138,6 +139,24 @@
       </div>
     </section>
 
+    <section class="section email-signup" id="email-list">
+      <div class="container email-card">
+        <div>
+          <p class="eyebrow">Stay updated</p>
+          <h2>Join the Victory Wrestling email list</h2>
+          <p>Get updates on registration, practice schedules, tournaments, camps, and other club announcements.</p>
+        </div>
+        <form class="signup-form" id="email-signup-form" action="/api/subscribe" method="post">
+          <label for="signup-email">Email address</label>
+          <div class="signup-row">
+            <input id="signup-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+            <button class="button primary" type="submit">Join Email List</button>
+          </div>
+          <p class="form-message" id="email-signup-message" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
     <section class="section two-col">
       <div class="container two-col-grid">
         <div class="info-panel">
@@ -225,5 +244,43 @@
       </div>
     </div>
   </footer>
+  <script>
+    const signupForm = document.getElementById('email-signup-form');
+    const signupMessage = document.getElementById('email-signup-message');
+
+    if (signupForm && signupMessage) {
+      signupForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const submitButton = signupForm.querySelector('button[type="submit"]');
+        const formData = new FormData(signupForm);
+
+        signupMessage.textContent = 'Adding you to the list...';
+        signupMessage.className = 'form-message';
+        submitButton.disabled = true;
+
+        try {
+          const response = await fetch(signupForm.action, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: formData.get('email') }),
+          });
+          const result = await response.json();
+
+          signupMessage.textContent = result.message || 'Thanks — you are on the Victory Wrestling email list.';
+          signupMessage.classList.toggle('success', response.ok && result.ok);
+          signupMessage.classList.toggle('error', !response.ok || !result.ok);
+
+          if (response.ok && result.ok) {
+            signupForm.reset();
+          }
+        } catch (error) {
+          signupMessage.textContent = 'We could not add that email right now. Please email info@victorywrestling.org.';
+          signupMessage.classList.add('error');
+        } finally {
+          submitButton.disabled = false;
+        }
+      });
+    }
+  </script>
 </body>
 </html>
