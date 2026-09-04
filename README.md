@@ -5,6 +5,8 @@ This is a static HTML/CSS site that can be uploaded to GoDaddy/cPanel hosting or
 Files to upload:
 - index.html
 - style.css
+- robots.txt
+- sitemap.xml
 - api/subscribe.js
 - assets/victory-v-logo.png
 
