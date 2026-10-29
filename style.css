@@ -32,3 +32,5 @@ a{color:inherit}.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1r
 .form-message.success{color:#146c2e}
 .form-message.error{color:#a62222}
 @media (max-width:760px){.email-card{grid-template-columns:1fr;padding:1.4rem}.signup-row{flex-direction:column;align-items:stretch}.signup-row button{width:100%}}
+.program-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:560px){.program-grid{grid-template-columns:1fr}}
